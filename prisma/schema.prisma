@@ -1,8 +1,3 @@
-// This is your Prisma schema file,
-// learn more about it in the docs: https://pris.ly/d/prisma-schema
-
-// Get a free hosted Postgres database in seconds: `npx create-db`
-
 generator client {
   provider = "prisma-client-js"
 }
@@ -12,58 +7,56 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-model User {
-  id        Int      @id @default(autoincrement())
-  name      String
-  email     String   @unique
-  password  String
-  role      String   @default("user")
-  createdAt DateTime @default(now())
-
-  orders Order[]
+model category {
+  id   Int    @id @default(autoincrement())
+  name String
+  food food[]
 }
 
-model Category {
-  id    Int    @id @default(autoincrement())
-  name  String
-
-  foods Food[]
-}
-
-model Food {
-  id          Int      @id @default(autoincrement())
+model food {
+  id          Int           @id @default(autoincrement())
   name        String
   description String?
   price       Float
+  categoryId  Int
+  category    category      @relation(fields: [categoryId], references: [id], map: "Food_categoryId_fkey")
+  orderdetail orderdetail[]
 
-  categoryId Int
-  category   Category @relation(fields: [categoryId], references: [id])
-
-  orderDetails OrderDetail[]
+  @@index([categoryId], map: "Food_categoryId_fkey")
 }
 
-model Order {
-  id         Int      @id @default(autoincrement())
-  totalPrice Float
-  status     String   @default("pending")
-  createdAt  DateTime @default(now())
+model order {
+  id          Int           @id @default(autoincrement())
+  totalPrice  Float
+  status      String        @default("pending")
+  createdAt   DateTime      @default(now())
+  userId      Int
+  user        user          @relation(fields: [userId], references: [id], map: "Order_userId_fkey")
+  orderdetail orderdetail[]
 
-  userId Int
-  user   User @relation(fields: [userId], references: [id])
-
-  details OrderDetail[]
+  @@index([userId], map: "Order_userId_fkey")
 }
 
-model OrderDetail {
-  id       Int @id @default(autoincrement())
-
+model orderdetail {
+  id       Int   @id @default(autoincrement())
   qty      Int
   price    Float
   subtotal Float
+  orderId  Int
+  foodId   Int
+  food     food  @relation(fields: [foodId], references: [id], map: "OrderDetail_foodId_fkey")
+  order    order @relation(fields: [orderId], references: [id], map: "OrderDetail_orderId_fkey")
 
-  orderId Int
-  order   Order @relation(fields: [orderId], references: [id])
+  @@index([foodId], map: "OrderDetail_foodId_fkey")
+  @@index([orderId], map: "OrderDetail_orderId_fkey")
+}
 
-  foodId Int
-  food   Food @relation(fields: [foodId], references: [id])
+model user {
+  id        Int      @id @default(autoincrement())
+  name      String
+  email     String   @unique(map: "User_email_key")
+  password  String
+  role      String   @default("user")
+  createdAt DateTime @default(now())
+  order     order[]
 }

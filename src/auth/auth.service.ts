@@ -11,26 +11,34 @@ export class AuthService {
   ) {}
 
   async register(body: any) {
-    const userExist = await this.prisma.user.findUnique({
-      where: { email: body.email },
-    });
+  console.log('REGISTER MASUK', body);
 
-    if (userExist) {
-      throw new BadRequestException('Email sudah digunakan');
-    }
+  const userExist = await this.prisma.user.findUnique({
+    where: { email: body.email },
+  });
 
-    const hashed = await bcrypt.hash(body.password, 10);
+  console.log('CEK USER SELESAI');
 
-    const user = await this.prisma.user.create({
-      data: {
-        name: body.name,
-        email: body.email,
-        password: hashed,
-      },
-    });
-
-    return user;
+  if (userExist) {
+    throw new BadRequestException('Email sudah digunakan');
   }
+
+  const hashed = await bcrypt.hash(body.password, 10);
+
+  console.log('HASH SELESAI');
+
+  const user = await this.prisma.user.create({
+    data: {
+      name: body.name,
+      email: body.email,
+      password: hashed,
+    },
+  });
+
+  console.log('CREATE USER SELESAI');
+
+  return user;
+}
 
 
   async login(body: any) {
