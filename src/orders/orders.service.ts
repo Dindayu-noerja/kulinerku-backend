@@ -39,12 +39,12 @@ export class OrdersService {
       data: {
         userId: body.userId,
         totalPrice: total,
-        orderdetails: {
+        orderdetail: {
           create: items,
         },
       },
       include: {
-        orderdetails: true,
+        orderdetail: true,
       },
     });
   }
