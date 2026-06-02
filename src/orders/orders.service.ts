@@ -39,12 +39,12 @@ export class OrdersService {
       data: {
         userId: body.userId,
         totalPrice: total,
-        details: {
+        orderdetails: {
           create: items,
         },
       },
       include: {
-        details: true,
+        orderdetails: true,
       },
     });
   }
@@ -52,7 +52,7 @@ export class OrdersService {
   findAll() {
     return this.prisma.order.findMany({
       include: {
-        details: true,
+        orderdetails: true,
         user: true,
       },
     });
