@@ -52,7 +52,7 @@ export class OrdersService {
   findAll() {
     return this.prisma.order.findMany({
       include: {
-        orderdetails: true,
+        orderdetail: true,
         user: true,
       },
     });
