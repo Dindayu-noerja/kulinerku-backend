@@ -96,3 +96,13 @@ Nest is an MIT-licensed open source project. It can grow thanks to the sponsors 
 ## License
 
 Nest is [MIT licensed](https://github.com/nestjs/nest/blob/master/LICENSE).
+
+## API Documentation
+
+Dokumentasi API tersedia dalam dua format:
+
+- Swagger UI: jalankan aplikasi lalu buka `http://localhost:3000/api-docs`.
+- OpenAPI JSON: jalankan aplikasi lalu buka `http://localhost:3000/api-docs-json`.
+- Postman Collection: import file `docs/kulinerku.postman_collection.json` ke Postman.
+
+Collection Postman sudah berisi semua endpoint controller (`Auth`, `Users`, `Categories`, `Foods`, dan `Orders`) serta endpoint dokumentasi Swagger. Ubah variable `baseUrl` jika aplikasi berjalan di host/port berbeda, lalu jalankan request `Auth/Login User` untuk mengisi variable `accessToken` secara otomatis sebelum mencoba endpoint yang membutuhkan Bearer Token.
