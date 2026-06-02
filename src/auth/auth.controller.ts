@@ -13,6 +13,7 @@ import {
   userWithPasswordSchema,
 } from '../swagger/schemas';
 import { AuthService } from './auth.service';
+import { RegisterDto } from './dto/register.dto';
 
 @ApiTags('Auth')
 @Controller('auth')
@@ -35,7 +36,7 @@ export class AuthController {
     schema: errorResponseSchema,
   })
   @Post('register')
-  register(@Body() body: any) {
+  register(@Body() body: RegisterDto) {
     return this.authService.register(body);
   }
 
