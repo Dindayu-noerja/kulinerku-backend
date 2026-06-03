@@ -9,6 +9,11 @@ async function bootstrap() {
   const httpAdapter = app.getHttpAdapter();
   const server = httpAdapter.getInstance() as Express;
 
+  app.enableCors({
+  origin: true,
+  credentials: true,
+  });
+
   server.get('/api-docs-json', (_request: Request, response: Response) => {
     response.json(openApiSpec);
   });
